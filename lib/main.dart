@@ -1,18 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_student_management/features/student_list_view.dart';
+import 'package:flutter_student_management/features/student/view_model/student_list_view_model.dart';
+import 'package:flutter_student_management/features/student/views/student_list_view.dart';
+import 'package:flutter_student_management/features/student/models/student_list.dart';
 
 void main() {
-  runApp(const StudentManagementApp());
+  final studentListController = StudentListViewModel(StudentList());
+  runApp(
+    StudentManagementApp(
+      viewModel: studentListController,
+    ),
+  );
 }
 
 class StudentManagementApp extends StatelessWidget {
-  const StudentManagementApp({super.key});
+  const StudentManagementApp({super.key, required this.viewModel});
+  final StudentListViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: "Student Management App",
-      home: HomePage(),
+    return ListenableBuilder(
+      listenable: viewModel,
+      builder: (BuildContext context, Widget? child) {
+        return MaterialApp(
+          title: "Student Management App",
+          home: HomePage(
+            viewModel: viewModel,
+          ),
+        );
+      },
     );
   }
 }
