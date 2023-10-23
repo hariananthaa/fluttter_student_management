@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_student_management/features/student/view_model/student_list_view_model.dart';
 import 'package:flutter_student_management/features/student/views/student_list_view.dart';
 import 'package:flutter_student_management/features/student/models/student_list.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
-  final studentListController = StudentListViewModel(StudentList());
+void main() async {
+  // Initialize the firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // Initialize the StudentListViewModel by passing the empty student list.
+  final studentListViewModel = StudentListViewModel(StudentList());
+
+  // RunApp function is used to place our widget tree in the screen.
   runApp(
     StudentManagementApp(
-      viewModel: studentListController,
+      viewModel: studentListViewModel,
     ),
   );
 }
@@ -18,9 +28,11 @@ class StudentManagementApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // [ListenableBuilder] is used to build our widget tree according to the changes that listen from the viewmodel.
     return ListenableBuilder(
       listenable: viewModel,
       builder: (BuildContext context, Widget? child) {
+        // To implement android specific style, we use [MaterialApp].
         return MaterialApp(
           title: "Student Management App",
           home: HomePage(

@@ -18,8 +18,13 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Student list'),
       ),
       body: ListView.builder(
+        /// To listout the widgets, we are using [ListView.builder]
+        ///
+        // Number of items to be listed
         itemCount: widget.viewModel.items.length,
+
         itemBuilder: (context, index) {
+          // [InkWell] is used to make the widget clickable.
           return InkWell(
             onTap: () {
               Navigator.of(context).push(

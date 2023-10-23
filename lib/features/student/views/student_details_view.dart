@@ -8,8 +8,10 @@ import 'package:flutter_student_management/helpers/department_list.dart';
 import 'package:flutter_student_management/helpers/gender_list.dart';
 
 class DetailsPage extends StatefulWidget {
+  // Creating the variables
   final StudentListViewModel viewModel;
   final int? index;
+
   const DetailsPage({
     Key? key,
     this.index,
@@ -21,8 +23,10 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
+  // This is the global key to control the form elements.
   final GlobalKey<FormState> _formKey = GlobalKey();
 
+  // Creating the variables to store the student data.
   String? _name;
   int? _age;
   String? _gender;
@@ -31,8 +35,11 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   void initState() {
+    // this initState will call after this class(page) is created is created.
     super.initState();
     if (widget.index != null) {
+      // Initialize the values if the index is available.
+      // That means user clicked the student item to edit it.
       _name = widget.viewModel.items[widget.index!].name;
       _age = widget.viewModel.items[widget.index!].age;
       _gender = widget.viewModel.items[widget.index!].gender;
@@ -54,13 +61,23 @@ class _DetailsPageState extends State<DetailsPage> {
       print('Department: $_department');
       print('Full time: $_isFullTime');
 
-      Student student =
-          Student(_name!, _age!, _gender!, _department!, _isFullTime);
+      Student student;
 
       if (widget.index == null) {
-        widget.viewModel.addItem(student);
+        // Using the length of the students list as id
+        // Create a new student
+        student = Student(widget.viewModel.items.length, _name!, _age!,
+            _gender!, _department!, _isFullTime);
+
+        // Calling the viewmodel to add the student in the firebase
+        widget.viewModel.addStudent(student);
       } else {
-        widget.viewModel.editStudentDetails(widget.index!, student);
+        // Create a new instance of the student with updated values with same id.
+        student = Student(
+            widget.index!, _name!, _age!, _gender!, _department!, _isFullTime);
+
+        // Calling the viewmodel to update the student in the firebase
+        widget.viewModel.editStudent(widget.index!, student);
       }
 
       Navigator.of(context).pop();
