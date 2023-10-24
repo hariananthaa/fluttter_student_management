@@ -43,13 +43,13 @@ class StudentListViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void addItem(Student student) {
-    _studentList.items.add(student);
-    notifyListeners();
-  }
+  // void addItem(Student student) {
+  //   _studentList.items.add(student);
+  //   notifyListeners();
+  // }
 
-  void editStudentDetails(int index, Student student) {
-    _studentList.items[index] = student;
-    notifyListeners();
-  }
+  // void editStudentDetails(int index, Student student) {
+  //   _studentList.items[index] = student;
+  //   notifyListeners();
+  // }
 }
